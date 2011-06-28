@@ -133,11 +133,11 @@ class AndroidMarket_Licensing_ResponseData
     /**
      * Get the response timestamp
      *
-     * @return integer
+     * @return double
      */
     public function getTimestamp()
     {
-        return (int)$this->_timestamp;
+        return (double)$this->_timestamp;
     }
 
     /**
