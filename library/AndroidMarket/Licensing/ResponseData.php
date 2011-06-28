@@ -64,7 +64,7 @@ class AndroidMarket_Licensing_ResponseData
     {
         if (!is_string($responseData)) {
             require_once 'AndroidMarket/Licensing/InvalidArgumentException.php';
-            throw new InvalidArgumentException("Invalid response data, expected string");
+            throw new AndroidMarket_Licensing_InvalidArgumentException("Invalid response data, expected string");
         }
 
         $parts = explode(':', $responseData);
@@ -74,7 +74,7 @@ class AndroidMarket_Licensing_ResponseData
 
         if (count($fields) != 6) {
             require_once 'AndroidMarket/Licensing/InvalidArgumentException.php';
-            throw new InvalidArgumentException("Wrong number of fields, expected 6");
+            throw new AndroidMarket_Licensing_InvalidArgumentException("Wrong number of fields, expected 6");
         }
 
         list($this->_responseCode, $this->_nonce, $this->_packageName, $this->_versionCode, $this->_userId, $this->_timestamp) = $fields;
