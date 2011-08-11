@@ -24,8 +24,9 @@ $responseData = '';
 $signature = '';
 
 //if you wish to inspect or use the response data, you can create
-//a response object and pass that in to the Validator's constructor
+//a response object and pass it as the first argument to the Validator's verify method
 //$response = new AndroidMarket_Licensing_ResponseData($responseData);
+//$valid = $validator->verify($response, $signature);
 
 $validator = new AndroidMarket_Licensing_ResponseValidator(PUBLIC_KEY, PACKAGE_NAME);
 $valid = $validator->verify($responseData, $signature);
