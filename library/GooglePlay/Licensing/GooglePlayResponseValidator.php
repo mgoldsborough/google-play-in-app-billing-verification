@@ -4,17 +4,18 @@
  *
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.
+ *
  * It is also available through the world-wide-web at this URL:
- * http://code.google.com/p/android-market-license-verification/source/browse/trunk/LICENSE
+ * https://github.com/MG2Innovations/google-play-license-verification/blob/master/LICENSE
  */
 
 /**
  * Verifies a response from the Licensing server
  *
- * @category   AndroidMarket
- * @package    AndroidMarket_Licensing
+ * @category   GooglePlay
+ * @package    GooglePlay_Licensing
  */
-class AndroidMarket_Licensing_ResponseValidator {
+class GooglePlayResponseValidator  {
 
     const SIGNATURE_ALGORITHM = OPENSSL_ALGO_SHA1;
 
@@ -45,8 +46,7 @@ class AndroidMarket_Licensing_ResponseValidator {
         $key = self::KEY_PREFIX . chunk_split($publicKey, 64, "\n") . self::KEY_SUFFIX;
         $key = openssl_get_publickey($key);
         if (false === $key) {
-            require_once 'AndroidMarket/Licensing/InvalidArgumentException.php';
-            throw new AndroidMarket_Licensing_InvalidArgumentException(
+            throw new GooglePlayInvalidArgumentException(
                     'Please pass a Base64-encoded public key from the Market portal');
         }
         $this->_publicKey   = $key;
@@ -57,16 +57,16 @@ class AndroidMarket_Licensing_ResponseValidator {
      * Verifies that the response was signed with the given signature
      * and, optionally, for the right package
      * 
-     * @param  AndroidMarket_Licensing_ResponseData|string $responseData
+     * @param  GooglePlayLicensingResponseData|string $responseData
      * @param  string $signature
      * @return bool
      */
     public function verify($responseData, $signature)
     {
-        if ($responseData instanceof AndroidMarket_Licensing_ResponseData) {
+        if ($responseData instanceof GooglePlayResponseData) {
             $response = $responseData;
         } else {
-            $response = new AndroidMarket_Licensing_ResponseData($responseData);
+            $response = new GooglePlayResponseData($responseData);
         }
 
         //check package name is valid
@@ -85,8 +85,7 @@ class AndroidMarket_Licensing_ResponseValidator {
         if (0 === $result) {
             return false;
         } else if (1 !== $result) {
-            require_once 'AndroidMarket/Licensing/RuntimeException.php';
-            throw new AndroidMarket_Licensing_RuntimeException(
+            throw new GooglePlayRuntimeException(
                     'Unknown error verifying the signature in openssl_verify');
         }
 

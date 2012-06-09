@@ -4,17 +4,18 @@
  *
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.
+ *
  * It is also available through the world-wide-web at this URL:
- * http://code.google.com/p/android-market-license-verification/source/browse/trunk/LICENSE
+ * https://github.com/MG2Innovations/google-play-license-verification/blob/master/LICENSE
  */
 
 /**
  * A representation of the data returned by the licensing service
  *
- * @category   AndroidMarket
- * @package    AndroidMarket_Licensing
+ * @category   GooglePlay
+ * @package    GooglePlay_Licensing
  */
-class AndroidMarket_Licensing_ResponseData
+class GooglePlayResponseData
 {
     const LICENSED                   = 0x0;
     const NOT_LICENSED               = 0x1;
@@ -26,6 +27,8 @@ class AndroidMarket_Licensing_ResponseData
     const ERROR_CONTACTING_SERVER    = 0x101;
     const ERROR_INVALID_PACKAGE_NAME = 0x102;
     const ERROR_NON_MATCHING_UID     = 0x103;
+    
+    protected $_orders;
     
     /**
      * @var integer
@@ -63,31 +66,17 @@ class AndroidMarket_Licensing_ResponseData
     public function  __construct($responseData)
     {
         if (!is_string($responseData)) {
-            require_once 'AndroidMarket/Licensing/InvalidArgumentException.php';
-            throw new AndroidMarket_Licensing_InvalidArgumentException("Invalid response data, expected string");
+            throw new GooglePlayInvalidArgumentException("Invalid response data, expected string");
         }
-
-        $parts = explode(':', $responseData);
-
-        $data = $parts[0];
-        $fields = explode('|', $data);
-
-        if (count($fields) != 6) {
-            require_once 'AndroidMarket/Licensing/InvalidArgumentException.php';
-            throw new AndroidMarket_Licensing_InvalidArgumentException("Wrong number of fields, expected 6");
-        }
-
-        list($this->_responseCode, $this->_nonce, $this->_packageName, $this->_versionCode, $this->_userId, $this->_timestamp) = $fields;
-    }
-
-    /**
-     * Get the license status or error code
-     *
-     * @return integer
-     */
-    public function getResponseCode()
-    {
-        return (int)$this->_responseCode;
+	
+        $jsonResponse = json_decode($responseData);
+        $this->_nonce = $jsonResponse->nonce;
+        
+        $_orders = array();
+        array_push($_orders, $jsonResponse->orders);
+        
+        echo 'JSON: ';
+        print_r($jsonResponse);
     }
 
     /**
@@ -110,35 +99,7 @@ class AndroidMarket_Licensing_ResponseData
         return $this->_packageName;
     }
 
-    /**
-     * Get the application version code
-     *
-     * @return integer
-     */
-    public function getVersionCode()
-    {
-        return (int)$this->_versionCode;
-    }
 
-    /**
-     * Get the user identifier
-     *
-     * @return string
-     */
-    public function getUserId()
-    {
-        return $this->_userId;
-    }
-
-    /**
-     * Get the response timestamp
-     *
-     * @return double
-     */
-    public function getTimestamp()
-    {
-        return (double)$this->_timestamp;
-    }
 
     /**
      * If server response was licensed
