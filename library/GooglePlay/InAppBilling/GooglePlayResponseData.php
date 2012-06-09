@@ -10,55 +10,23 @@
  */
 
 /**
- * A representation of the data returned by the licensing service
+ * A representation of the data returned by the Google Play In-App Billing service
  *
  * @category   GooglePlay
  * @package    GooglePlay_Licensing
  */
 class GooglePlayResponseData
 {
-    const LICENSED                   = 0x0;
-    const NOT_LICENSED               = 0x1;
-    const LICENSED_OLD_KEY           = 0x2;
-    const ERROR_NOT_MARKET_MANAGED   = 0x3;
-    const ERROR_SERVER_FAILURE       = 0x4;
-    const ERROR_OVER_QUOTA           = 0x5;
-
-    const ERROR_CONTACTING_SERVER    = 0x101;
-    const ERROR_INVALID_PACKAGE_NAME = 0x102;
-    const ERROR_NON_MATCHING_UID     = 0x103;
     
+	/**
+	 * @var array
+	 */
     protected $_orders;
-    
-    /**
-     * @var integer
-     */
-    protected $_responseCode;
 
     /**
      * @var integer
      */
     protected $_nonce;
-
-    /**
-     * @var string
-     */
-    protected $_packageName;
-
-    /**
-     * @var integer
-     */
-    protected $_versionCode;
-
-    /**
-     * @var string
-     */
-    protected $_userId;
-
-    /**
-     * @var integer
-     */
-    protected $_timestamp;
 
     /**
      * @param string $responseData
@@ -70,13 +38,21 @@ class GooglePlayResponseData
         }
 	
         $jsonResponse = json_decode($responseData);
+        
+        if(empty($jsonResponse->nonce))
+        	throw new GooglePlayInvalidArgumentException("No nonce");
+         
         $this->_nonce = $jsonResponse->nonce;
         
-        $_orders = array();
-        array_push($_orders, $jsonResponse->orders);
+        if(empty($jsonResponse->orders))
+        	throw new GooglePlayInvalidArgumentException("No orders");
         
-        echo 'JSON: ';
-        print_r($jsonResponse);
+        $_orders = array();
+        
+        foreach($jsonResponse->orders as $order) {
+        	$gpOrder = new GooglePlayOrder($order);
+        	array_push($_orders, $gpOrder);
+        }
     }
 
     /**
@@ -90,26 +66,12 @@ class GooglePlayResponseData
     }
 
     /**
-     * Get the application package name
+     * Get the array of orders
      *
      * @return string
      */
-    public function getPackageName()
+    public function getOrders()
     {
-        return $this->_packageName;
+        return $this->_orders;
     }
-
-
-
-    /**
-     * If server response was licensed
-     *
-     * @return bool
-     */
-    public function isLicensed()
-    {
-        return (self::LICENSED == $this->_responseCode
-               || self::LICENSED_OLD_KEY == $this->_responseCode);
-    }
-
 }

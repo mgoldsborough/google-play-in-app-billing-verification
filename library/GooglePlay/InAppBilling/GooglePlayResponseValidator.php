@@ -10,7 +10,7 @@
  */
 
 /**
- * Verifies a response from the Licensing server
+ * Verifies a response from the Google Play In-App Billing server.
  *
  * @category   GooglePlay
  * @package    GooglePlay_Licensing
@@ -71,10 +71,6 @@ class GooglePlayResponseValidator  {
 
         //check package name is valid
         if (!empty($packageName) && $packageName !== $response->getPackageName()) {
-            return false;
-        }
-
-        if (!$response->isLicensed()) {
             return false;
         }
 

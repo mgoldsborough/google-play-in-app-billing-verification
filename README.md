@@ -1,4 +1,4 @@
-android-market-license-verification
+google-play-in-app-billing-verification
 ===================================
 A simple PHP library for verifying responses from the Google Play In-App billing service. By verifying responses signed using public-key cryptography you can check whether a user has genuinely purchased your application.
 
