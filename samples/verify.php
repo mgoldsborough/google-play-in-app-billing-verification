@@ -1,18 +1,20 @@
 <?php
+
 /**
  * LICENSE
  *
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.
  * It is also available through the world-wide-web at this URL:
- * http://code.google.com/p/android-market-license-verification/source/browse/trunk/LICENSE
+ * https://github.com/mgoldsborough/google-play-in-app-billing-verification
  */
 
-set_include_path(get_include_path() . PATH_SEPARATOR . '../library');
-
-require_once 'AndroidMarket/Licensing/ResponseData.php';
-require_once 'AndroidMarket/Licensing/ResponseValidator.php';
-
+require_once '../library/GooglePlay/InAppBilling/GooglePlayRuntimeException.php';
+require_once '../library/GooglePlay/InAppBilling/GooglePlayInvalidArgumentException.php';
+require_once '../library/GooglePlay/InAppBilling/GooglePlayOrder.php';
+require_once '../library/GooglePlay/InAppBilling/GooglePlayResponseData.php';
+require_once '../library/GooglePlay/InAppBilling/GooglePlayResponseValidator.php';
+echo 1;
 //Your key, copy and paste from https://market.android.com/publish/editProfile
 define('PUBLIC_KEY', '');
 //Your app's package name, e.g. com.example.yourapp
@@ -28,7 +30,7 @@ $signature = '';
 //$response = new AndroidMarket_Licensing_ResponseData($responseData);
 //$valid = $validator->verify($response, $signature);
 
-$validator = new AndroidMarket_Licensing_ResponseValidator(PUBLIC_KEY, PACKAGE_NAME);
+$validator = new GooglePlayResponseValidator(PUBLIC_KEY, PACKAGE_NAME);
 $valid = $validator->verify($responseData, $signature);
 
 var_dump($valid);
