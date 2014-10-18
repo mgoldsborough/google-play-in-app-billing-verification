@@ -14,7 +14,7 @@ require_once '../library/GooglePlay/InAppBilling/GooglePlayInvalidArgumentExcept
 require_once '../library/GooglePlay/InAppBilling/GooglePlayOrder.php';
 require_once '../library/GooglePlay/InAppBilling/GooglePlayResponseData.php';
 require_once '../library/GooglePlay/InAppBilling/GooglePlayResponseValidator.php';
-echo 1;
+
 //Your key, copy and paste from https://market.android.com/publish/editProfile
 define('PUBLIC_KEY', '');
 //Your app's package name, e.g. com.example.yourapp
